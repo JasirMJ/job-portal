@@ -15,17 +15,20 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path,include
+from django.urls import path
+from django.conf.urls import url, include
 from employer import views as eviews
 from freelancer import views as fviews
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('employer-register/', eviews.Register.as_View() ,name = "employer-register"),
-    path('freelancer-register/', fviews.Register.as_View() ,name = "freelancer-register"),
-    path('freelancer/', fviews.Register.as_View() ,name = "freelancer-home"),
-    path('employer/', eviews.Employer.as_View() ,name = "freelancer-home"),
+    url(r'^api-auth/', include('rest_framework.urls')),
+
+    path('employer-register/', eviews.Register.as_view() ,name = "employer-register"),
+    # path('freelancer-register/', fviews.Register.as_view() ,name = "freelancer-register"),
+    # path('freelancer/', fviews.Home.as_view() ,name = "freelancer-home"),
+    path('employer/', include('employer.urls'),name = "employer-home"),
 
 
 ]
