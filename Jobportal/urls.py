@@ -27,8 +27,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^api-auth/', include('rest_framework.urls')),
 
-    path('employer-register/', eviews.Register.as_view() ,name = "employer-register"),
-    # path('freelancer-register/', fviews.Register.as_view() ,name = "freelancer-register"),
-    # path('freelancer/', fviews.Home.as_view() ,name = "freelancer-home"),
-    path('employer/', include('employer.urls'),name = "employer-home"),
+    # path('employer-register/', eviews.Register.as_view() ,name = "employer-register"),
+    # # path('freelancer-register/', fviews.Register.as_view() ,name = "freelancer-register"),
+    # # path('freelancer/', fviews.Home.as_view() ,name = "freelancer-home"),
+    # path('employer/', include('employer.urls'),name = "employer-home"),
 ]
