@@ -22,6 +22,8 @@ from freelancer import views as fviews
 
 
 urlpatterns = [
+    path('', include('AdminPanel.urls')),
+
     path('admin/', admin.site.urls),
     url(r'^api-auth/', include('rest_framework.urls')),
 
@@ -29,6 +31,4 @@ urlpatterns = [
     # path('freelancer-register/', fviews.Register.as_view() ,name = "freelancer-register"),
     # path('freelancer/', fviews.Home.as_view() ,name = "freelancer-home"),
     path('employer/', include('employer.urls'),name = "employer-home"),
-
-
 ]
