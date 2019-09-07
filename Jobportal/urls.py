@@ -17,18 +17,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url, include
-from employer import views as eviews
-from freelancer import views as fviews
+from jp import views as jpviews
+
 
 
 urlpatterns = [
     path('', include('AdminPanel.urls')),
-
     path('admin/', admin.site.urls),
-    url(r'^api-auth/', include('rest_framework.urls')),
+    path('jobportal/', include('jp.urls') ,name = "register"),
+    # url(r'^api-auth/', include('rest_framework.urls')),
 
-    # path('employer-register/', eviews.Register.as_view() ,name = "employer-register"),
-    # # path('freelancer-register/', fviews.Register.as_view() ,name = "freelancer-register"),
-    # # path('freelancer/', fviews.Home.as_view() ,name = "freelancer-home"),
-    # path('employer/', include('employer.urls'),name = "employer-home"),
+    path('register/', jpviews.Register.as_view() ,name = "register"),
+    path('index/', jpviews.Home.as_view() ,name = "home"),
+    path('login/', jpviews.LoginView.as_view(),name = "login"),
 ]
