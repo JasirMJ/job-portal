@@ -265,9 +265,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 class Profile(ListAPIView):
     permission_classes = (IsAuthenticated,)
     authentication_classes = (TokenAuthentication,)
-    # serializer_class = ImageSerializer
+    serializer_class = ImageSerializer
 
-    def get(self,request):
+    def get_queryset(self):
+        obj = Images.objects.filter(userid = self.request.user.id)
+        return obj
+
+    # def get(self,request):
         user_obj = User.objects.filter(id=self.request.user.id).first()
 
         details_obj = UserDetails.objects.filter(userid=self.request.user.id).first()
