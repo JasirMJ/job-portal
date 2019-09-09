@@ -4,13 +4,13 @@ from django.db import models
 # Create your models here.
 
 class Images(models.Model):
-    # name = models.ImageField()
+    name = models.CharField(max_length=10)
     userid = models.ForeignKey(User,on_delete=models.CASCADE)
     category = models.CharField(max_length=10)
     file = models.FileField(blank=True, null=True)
 
-    def __str__(self):
-        return self.file.name
+    # def __str__(self):
+    #     return self.file.name
 
 class Categories(models.Model):
     name = models.CharField(max_length=15)

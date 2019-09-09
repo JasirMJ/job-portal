@@ -1,10 +1,15 @@
+import os
+
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from django.core.files.storage import FileSystemStorage
+from django.db.models.expressions import RawSQL
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
+from rest_framework.generics import ListAPIView
 from rest_framework.parsers import FileUploadParser
 from rest_framework.permissions import IsAuthenticated
+from django.db import connection
 
 from AdminPanel.models import *
 from django.shortcuts import render
@@ -210,6 +215,9 @@ class ImageUpload(APIView):
     authentication_classes = (TokenAuthentication,)
 
     def get(self,request):
+        obj = Images.objects.filter(userid=self.request.user)
+
+
         return Response(
             {
                 STATUS:True,
@@ -251,3 +259,93 @@ class ImageUpload(APIView):
                 }
             )
 
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+class Profile(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)
+    # serializer_class = ImageSerializer
+
+    def get(self,request):
+        user_obj = User.objects.filter(id=self.request.user.id).first()
+
+        details_obj = UserDetails.objects.filter(userid=self.request.user.id).first()
+        img_obj = Images.objects.filter(userid=self.request.user.id).first()
+
+
+        u_dict = {
+            'username':user_obj.username,
+            'mobile':user_obj.mobile,
+        }
+
+        return Response(
+            {
+                STATUS:True,
+                'username': user_obj.username,
+                'mobile': user_obj.mobile,
+                'profile':str(img_obj.file),
+                'profile':BASE_DIR+str(img_obj.file),
+
+
+
+
+                # 'details':user_details_data,
+                # 'image':image_data,
+            }
+        )
+    def post(self,request):
+
+        #updat goes here
+        return Response(
+            {
+                STATUS:True,
+            }
+        )
+
+class OnclickFreelancer(APIView):
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)
+
+    def get(self,request):
+        return Response({STATUS:True,MESSAGE:"this is get"})
+        # ud_obj = UserDetails.objects.filter(userid=self.request.user.id).first()
+        # if ud_obj.is_freelancer == 1:
+        #     msg = "user is free freelancer"
+        #     return Response(
+        #         {
+        #             STATUS: True,
+        #             MESSAGE: msg,
+        #         }
+        #     )
+        # else:
+        #     msg = "user is not freelancer"
+        #     return Response(
+        #         {
+        #             STATUS:True,
+        #             MESSAGE:msg,
+        #         }
+        #     )
+    def post(self,request):
+        ud_obj = UserDetails.objects.filter(userid=self.request.user.id).first()
+        if ud_obj.is_freelancer == 1:
+            msg = "user is free freelancer"
+            return Response(
+                {
+                    STATUS: True,
+                    MESSAGE: msg,
+                }
+            )
+        else:
+            msg = "user is not freelancer"
+            return Response(
+                {
+                    STATUS: True,
+                    MESSAGE: msg,
+                }
+            )
+
+# list all skill api
+#list all freelancer api
+#rate freelancer ,who has completed the work ie accepted
+#
